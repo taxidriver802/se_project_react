@@ -1,8 +1,7 @@
 # React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The "WTWR" webpage is my fourth project in the software engineering program at TripleTen. It was created using mostly javascript, as well as some html and stylying with css. This webpage was created following a figma design brief.
 
-Currently, two official plugins are available:
+## Deployed URL 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+https://taxidriver802.github.io/se_project_react/
