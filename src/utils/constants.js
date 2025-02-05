@@ -1,3 +1,95 @@
+export const weatherOptions = [
+  {
+    day: true,
+    condition: "clear",
+    url: new URL("../assets/weatherTypes/day/clearDay.png", import.meta.url)
+      .href,
+  },
+  {
+    day: true,
+    condition: "cloudy",
+    url: new URL("../assets/weatherTypes/day/cloudyDay.png", import.meta.url)
+      .href,
+  },
+  {
+    day: true,
+    condition: "foggy",
+    url: new URL("../assets/weatherTypes/day/foggyDay.png", import.meta.url)
+      .href,
+  },
+  {
+    day: true,
+    condition: "rainy",
+    url: new URL("../assets/weatherTypes/day/rainyDay.png", import.meta.url)
+      .href,
+  },
+  {
+    day: true,
+    condition: "snowy",
+    url: new URL("../assets/weatherTypes/day/snowyDay.png", import.meta.url)
+      .href,
+  },
+  {
+    day: true,
+    condition: "stormy",
+    url: new URL("../assets/weatherTypes/day/stormyDay.png", import.meta.url)
+      .href,
+  },
+  {
+    day: false,
+    condition: "clear",
+    url: new URL("../assets/weatherTypes/night/clearNight.png", import.meta.url)
+      .href,
+  },
+  {
+    day: false,
+    condition: "cloudy",
+    url: new URL(
+      "../assets/weatherTypes/night/cloudyNight.png",
+      import.meta.url,
+    ).href,
+  },
+  {
+    day: false,
+    condition: "foggy",
+    url: new URL("../assets/weatherTypes/night/foggyNight.png", import.meta.url)
+      .href,
+  },
+  {
+    day: false,
+    condition: "rainy",
+    url: new URL("../assets/weatherTypes/night/rainyNight.png", import.meta.url)
+      .href,
+  },
+  {
+    day: false,
+    condition: "snowy",
+    url: new URL("../assets/weatherTypes/night/snowyNight.png", import.meta.url)
+      .href,
+  },
+  {
+    day: false,
+    condition: "stormy",
+    url: new URL(
+      "../assets/weatherTypes/night/stormyNight.png",
+      import.meta.url,
+    ).href,
+  },
+];
+
+export const defaultWeatherOptions = {
+  day: {
+    url: new URL("../assets/weatherTypes/day/defaultDay.png", import.meta.url)
+      .href,
+  },
+  night: {
+    url: new URL(
+      "../assets/weatherTypes/night/defaultNight.png",
+      import.meta.url,
+    ).href,
+  },
+};
+
 export const defaultClothingItems = [
   {
     _id: 0,
