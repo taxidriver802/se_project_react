@@ -71,6 +71,9 @@
 
 .modal__label_type_radio {
   margin-top: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
 }
 
 .modal__submit {
