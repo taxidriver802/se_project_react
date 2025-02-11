@@ -9,6 +9,9 @@
   justify-content: center;
   align-items: center;
   visibility: hidden;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
 }
 
 .modal_opened {
@@ -38,9 +41,6 @@
   width: 100%;
   box-sizing: border-box;
   border-radius: 20px;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 20px;
 }
 
 .modal__form {
@@ -71,9 +71,6 @@
 
 .modal__label_type_radio {
   margin-top: 10px;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 20px;
 }
 
 .modal__submit {
