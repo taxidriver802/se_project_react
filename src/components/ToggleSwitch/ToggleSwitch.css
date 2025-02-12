@@ -24,16 +24,16 @@
 
 .toggle-switch__text {
   position: absolute;
-  top: 5px;
+  top: 3px;
   color: rgb(0 0 0 / 0.5);
 }
 
 .toggle-switch__text_F {
-  left: 9px;
+  left: 8px;
 }
 
 .toggle-switch__text_C {
-  right: 9px;
+  right: 6px;
 }
 
 .toggle-switch__checkbox:checked ~ .toggle-switch__slider {

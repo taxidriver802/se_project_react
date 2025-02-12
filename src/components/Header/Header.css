@@ -12,6 +12,18 @@
   margin-right: 24px;
 }
 
+.header__avatar {
+  margin-left: 20px;
+}
+
+.header__link {
+  text-decoration: none;
+  color: black;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .header__date-location {
   margin: 0 auto 0 0;
 }
