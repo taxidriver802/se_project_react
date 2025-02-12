@@ -31,7 +31,7 @@
 .header__clothes-button {
   margin: 0 20px 0 10px;
   border: none;
-
+  background-color: transparent;
   cursor: pointer;
 }
 

@@ -1,4 +1,56 @@
+.modal {
+  font-family: "Cabinet Gretsk", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.modal__item {
+  background-color: #fff;
+  position: relative;
+  padding: 0;
+  max-width: 496px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 20px;
+}
+
+.modal__close {
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+}
+
 .modal__image {
-  width: 350px;
-  height: 300px;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px 16px 0 0;
+}
+
+.modal__footer {
+  display: flex;
+  padding-left: 32px;
+}
+
+.modal__footer h2 {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.modal__weather {
+  margin: 0;
+  padding-bottom: 32px;
+}
+
+.modal__footer-button {
+  margin: 20px 32px 0 218px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: red;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
 }

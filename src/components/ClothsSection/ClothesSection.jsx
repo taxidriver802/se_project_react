@@ -1,24 +1,24 @@
 import ItemCard from "../ItemCard/ItemCard.jsx";
-import { defaultClothingItems } from "../../utils/constants";
 
 import "./ClothesSection.css";
 
 /* import handeCardClick from "../../utils/handleCardClick"; */
 
-function ClothesSection({ onCardClick } /* Pass Here !!!! */) {
+function ClothesSection({ onCardClick, clothingItems }) {
   return (
     <div className="clothes__section">
       <div className="clothes__section__header">
-        <p>Your Items</p>
-        <button type="button">+ Add New</button>
+        <p className="clothes__section__title">Your Items</p>
+        <button type="button" className="clothes__section-button">
+          + Add New
+        </button>
       </div>
 
-      <ul className="clothes-section__items">
-        {defaultClothingItems.map((filteredCard) => (
+      <ul className="clothes__section__items">
+        {clothingItems.map((filteredCard) => (
           <ItemCard
             key={filteredCard._id}
             item={filteredCard}
-            /* TODO - Pass as prop */
             onCardClick={onCardClick}
           />
         ))}

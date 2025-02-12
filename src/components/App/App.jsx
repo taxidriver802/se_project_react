@@ -47,7 +47,7 @@ function App() {
 
   const handleAddItemModalSubmit = ({ name, imageUrl, weather }) => {
     setClothingItems((prevItems) => [
-      { name, imageUrl: imageUrl, weather },
+      { name, imageUrl, weather },
       ...prevItems,
     ]);
     closeActiveModal();
@@ -66,14 +66,7 @@ function App() {
     getItems()
       .then((data) => {
         //set clothing items using returned data
-        const formattedData = data.map(({ _id, imageUrl, name, weather }) => ({
-          _id,
-          imageUrl,
-          name,
-          weather,
-        }));
-
-        setClothingItems(formattedData);
+        setClothingItems(data);
       })
       .catch(console.error);
   }, []);
@@ -100,7 +93,12 @@ function App() {
             <Route
               exact
               path="/profile"
-              element={<Profile onCardClick={handleCardClick} />}
+              element={
+                <Profile
+                  onCardClick={handleCardClick}
+                  clothingItems={clothingItems}
+                />
+              }
             />
             <Route path="*" element={<p>ERROR: 404!1!1!1!</p>} />
           </Routes>
