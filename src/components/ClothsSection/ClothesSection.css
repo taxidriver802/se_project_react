@@ -1,9 +1,12 @@
 .clothes__section__header {
   display: flex;
   flex-direction: row;
+  align-items: center; /* Ensure items are centered vertically */
+  width: 100%; /* Ensure the header takes the full width */
 }
 
 .clothes__section__items {
+  max-width: 1360px;
   padding: 0;
   margin: 0;
   display: flex;
@@ -21,4 +24,11 @@
   cursor: pointer;
   color: rgba(0, 0, 0, 0.6);
   background-color: transparent;
+}
+
+.clothes__section_custom-button {
+  background-color: transparent;
+  border: none;
+  margin-left: auto; /* Use margin-left: auto to push the button to the right */
+  cursor: pointer;
 }

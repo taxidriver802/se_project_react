@@ -1,89 +1,99 @@
-import { Routes, Route } from "react-router-dom";
-import { useEffect, useState } from "react";
-
-import "./App.css";
-import { coordinates, APIkey } from "../../utils/constants.js";
-import { getWeather, filterWeatherData } from "../../utils/weatherApi.js";
-import Main from "../Main/Main.jsx";
-import Header from "../Header/Header.jsx";
-import Footer from "../Footer/Footer.jsx";
-import ItemModal from "../ItemModal/ItemModal";
-import CurrentTempUnitContext from "../../contexts/CurrentTempUnitContext.jsx";
-import Profile from "../Profile/Profile.jsx";
-import AddItemModal from "../AddItemModal/AddItemModal.jsx";
-import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal.jsx";
-import { defaultClothingItems } from "../../utils/constants.js";
-import { getItems, addItem, deleteItem } from "../../utils/api.js";
+import React, { useEffect, useState } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import Main from '../Main/Main.jsx';
+import Header from '../Header/Header.jsx';
+import Footer from '../Footer/Footer.jsx';
+import ItemModal from '../ItemModal/ItemModal';
+import CurrentTempUnitContext from '../../contexts/CurrentTempUnitContext.jsx';
+import Profile from '../Profile/Profile.jsx';
+import Customize from '../Customize/Customize.jsx';
+import AddItemModal from '../AddItemModal/AddItemModal.jsx';
+import DeleteConfirmationModal from '../DeleteConfirmationModal/DeleteConfirmationModal.jsx';
+import {
+  APIkey,
+  coordinates,
+  defaultClothingItems,
+} from '../../utils/constants.js';
+import { getItems, addItem, deleteItem } from '../../utils/api.js';
+import { getWeather, filterWeatherData } from '../../utils/weatherApi.js';
+/* import ClothesSection from '../ClothsSection/ClothesSection.jsx'; */
+import './App.css';
 
 function App() {
   const [weatherData, setWeatherData] = useState({
-    type: "",
+    type: '',
     temp: { f: 999, C: 999 },
-    city: "",
-    condition: "",
+    city: '',
+    condition: '',
     isDay: true,
   });
 
   const [clothingItems, setClothingItems] = useState(defaultClothingItems);
 
-  const [activeModal, setActiveModal] = useState("");
+  const [activeModal, setActiveModal] = useState('');
   const [selectedCard, setSelectedCard] = useState({});
-  const [currentTempUnit, setCurrentTempUnit] = useState("F");
+  const [currentTempUnit, setCurrentTempUnit] = useState('F');
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+
   const handleToggleSwitchChange = () => {
-    setCurrentTempUnit(currentTempUnit === "F" ? "C" : "F");
+    setCurrentTempUnit(currentTempUnit === 'F' ? 'C' : 'F');
   };
 
   const handleCardClick = (card) => {
-    setActiveModal("preview");
+    setActiveModal('preview');
     setSelectedCard(card);
   };
 
   const handleAddClick = () => {
-    setActiveModal("add-garment");
+    setActiveModal('add-garment');
+  };
+
+  const handleCustomizeClick = () => {
+    console.log('Customize button hudhudhclicked');
+    navigate('/customize');
   };
 
   const closeActiveModal = () => {
-    setActiveModal("");
+    setActiveModal('');
   };
-
-  //
 
   useEffect(() => {
     const handleOverlay = (e) => {
-      if (e.target.classList.contains("modal")) {
+      if (e.target.classList.contains('modal')) {
         closeActiveModal();
       }
     };
 
     const handleEscape = (e) => {
-      if (e.key === "Escape") {
+      if (e.key === 'Escape') {
         closeActiveModal();
       }
     };
 
-    document.addEventListener("mousedown", handleOverlay);
-    document.addEventListener("keydown", handleEscape);
+    document.addEventListener('mousedown', handleOverlay);
+    document.addEventListener('keydown', handleEscape);
 
     return () => {
-      document.removeEventListener("mousedown", handleOverlay);
-      document.removeEventListener("keydown", handleEscape);
+      document.removeEventListener('mousedown', handleOverlay);
+      document.removeEventListener('keydown', handleEscape);
     };
   }, [activeModal, closeActiveModal]);
 
   const deleteConfirmation = () => {
-    setActiveModal("delete-confirmation");
+    setActiveModal('delete-confirmation');
   };
 
   const handleDeleteClickApi = () => {
     deleteItem(selectedCard._id)
       .then(() => {
         setClothingItems((prevItems) =>
-          prevItems.filter((item) => item._id !== selectedCard._id),
+          prevItems.filter((item) => item._id !== selectedCard._id)
         );
         closeActiveModal();
       })
-      .catch((err) => console.error("Error deleting item:", err));
+      .catch((err) => console.error('Error deleting item:', err));
   };
 
   const handleAddItemModalSubmit = ({ name, imageUrl, weather }) => {
@@ -93,7 +103,7 @@ function App() {
         setClothingItems((prevItems) => [newItem, ...prevItems]);
         closeActiveModal();
       })
-      .catch((err) => console.error("Error adding item:", err))
+      .catch((err) => console.error('Error adding item:', err))
       .finally(() => setIsLoading(false));
   };
 
@@ -109,7 +119,6 @@ function App() {
   useEffect(() => {
     getItems()
       .then((data) => {
-        //set clothing items using returned data
         setClothingItems(data);
       })
       .catch(console.error);
@@ -145,13 +154,25 @@ function App() {
                 />
               }
             />
+            <Route
+              exact
+              path="/customize"
+              element={
+                <Customize
+                  onCardClick={handleCardClick}
+                  clothingItems={clothingItems}
+                  handleAddClick={handleAddClick}
+                  onCustomizeClick={handleCustomizeClick}
+                />
+              }
+            />
             <Route path="*" element={<p>ERROR: 404!1!1!1!</p>} />
           </Routes>
 
           <Footer />
         </div>
         <AddItemModal
-          isOpen={activeModal === "add-garment"}
+          isOpen={activeModal === 'add-garment'}
           onClose={closeActiveModal}
           onAddItemModalSubmit={handleAddItemModalSubmit}
           isLoading={isLoading}
@@ -162,7 +183,7 @@ function App() {
           card={selectedCard}
           handleDeleteConfirmation={deleteConfirmation}
         />
-        {activeModal === "delete-confirmation" && (
+        {activeModal === 'delete-confirmation' && (
           <DeleteConfirmationModal
             handleDeleteItem={handleDeleteClickApi}
             activeModal={activeModal}

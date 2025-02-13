@@ -1,0 +1,13 @@
+.custom-side-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  width: 544.88px;
+  background-color: rgba(29, 53, 65, 0.6);
+  border: 2px solid rgba(0, 0, 0, 0.6);
+  border-radius: 20px;
+  padding: 20px;
+  margin: 50px 20px 0 0;
+  position: sticky;
+}

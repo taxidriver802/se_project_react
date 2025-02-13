@@ -1,14 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-import "./Header.css";
-import logo from "../../assets/logo.svg";
-import avatar from "../../assets/avatar.png";
-import ToggleSwitch from "../toggleSwitch/toggleSwitch";
+import './Header.css';
+import logo from '../../assets/logo.svg';
+import avatar from '../../assets/avatar.png';
+import ToggleSwitch from '../toggleSwitch/toggleSwitch';
 
 function Header({ handleAddClick, weatherData }) {
-  const currentDate = new Date().toLocaleString("default", {
-    month: "long",
-    day: "numeric",
+  const currentDate = new Date().toLocaleString('default', {
+    month: 'long',
+    day: 'numeric',
   });
 
   return (

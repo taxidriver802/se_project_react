@@ -1,9 +1,9 @@
-import "./DeleteConfirmationModal.css";
+import './DeleteConfirmationModal.css';
 
 function DeleteConfirmationModal({ handleDeleteItem, activeModal, onClose }) {
   return (
     <div
-      className={`modal ${activeModal === "delete-confirmation" && "modal_opened"}`}
+      className={`modal ${activeModal === 'delete-confirmation' && 'modal_opened'}`}
     >
       <div className="modal__content modal__content_confirm-form">
         <button

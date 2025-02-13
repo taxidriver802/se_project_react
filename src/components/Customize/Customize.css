@@ -1,0 +1,11 @@
+.customize {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 20px;
+  justify-content: space-between;
+}
+
+.customize__clothes_section {
+  max-width: 100%;
+}
