@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:3001";
+const baseUrl = 'http://localhost:3001';
 
 function request(url, options) {
   return fetch(url, options).then(checkResponse);
@@ -9,14 +9,14 @@ function checkResponse(res) {
 }
 
 function getItems() {
-  return request(`${baseUrl}/items`, { method: "GET" });
+  return request(`${baseUrl}/items`, { method: 'GET' });
 }
 
 function addItem({ name, imageUrl, weather }) {
   return request(`${baseUrl}/items`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({ name, imageUrl, weather }),
   });
@@ -24,9 +24,9 @@ function addItem({ name, imageUrl, weather }) {
 
 function deleteItem(itemId) {
   return request(`${baseUrl}/items/${itemId}`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   });
 }
