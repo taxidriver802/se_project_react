@@ -1,5 +1,5 @@
 import { createContext } from "react";
 
-const currentTempUnitContext = createContext();
+const CurrentTempUnitContext = createContext();
 
-export default currentTempUnitContext;
+export default CurrentTempUnitContext;

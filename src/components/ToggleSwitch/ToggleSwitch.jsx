@@ -1,10 +1,10 @@
 import { useContext } from "react";
-import currentTempUnitContext from "../../contexts/CurrentTempUnitContext.jsx";
+import CurrentTempUnitContext from "../../contexts/CurrentTempUnitContext.jsx";
 import "./ToggleSwitch.css";
 
 export default function ToggleSwitch() {
   const { handleToggleSwitchChange, currentTempUnit } = useContext(
-    currentTempUnitContext,
+    CurrentTempUnitContext,
   );
 
   return (

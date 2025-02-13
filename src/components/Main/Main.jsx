@@ -3,11 +3,11 @@ import { useContext } from "react";
 import "../../vendor/fonts.css";
 import "./Main.css";
 import WeatherCard from "../WeatherCard/WeatherCard";
-import currentTempUnitContext from "../../contexts/CurrentTempUnitContext.jsx";
+import CurrentTempUnitContext from "../../contexts/CurrentTempUnitContext.jsx";
 import ItemCard from "../ItemCard/ItemCard";
 
 function Main({ weatherData, onCardClick, clothingItems }) {
-  const { currentTempUnit } = useContext(currentTempUnitContext);
+  const { currentTempUnit } = useContext(CurrentTempUnitContext);
 
   return (
     <main>

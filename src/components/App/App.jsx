@@ -8,10 +8,10 @@ import Main from "../Main/Main.jsx";
 import Header from "../Header/Header.jsx";
 import Footer from "../Footer/Footer.jsx";
 import ItemModal from "../ItemModal/ItemModal";
-import currentTempUnitContext from "../../contexts/CurrentTempUnitContext.jsx";
+import CurrentTempUnitContext from "../../contexts/CurrentTempUnitContext.jsx";
 import Profile from "../Profile/Profile.jsx";
 import AddItemModal from "../AddItemModal/AddItemModal.jsx";
-import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal.jsx"
+import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal.jsx";
 import { defaultClothingItems } from "../../utils/constants.js";
 import { getItems, addItem, deleteItem } from "../../utils/api.js";
 
@@ -29,6 +29,7 @@ function App() {
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   const [currentTempUnit, setCurrentTempUnit] = useState("F");
+  const [isLoading, setIsLoading] = useState(false);
   const handleToggleSwitchChange = () => {
     setCurrentTempUnit(currentTempUnit === "F" ? "C" : "F");
   };
@@ -46,32 +47,54 @@ function App() {
     setActiveModal("");
   };
 
+  //
+
+  useEffect(() => {
+    const handleOverlay = (e) => {
+      if (e.target.classList.contains("modal")) {
+        closeActiveModal();
+      }
+    };
+
+    const handleEscape = (e) => {
+      if (e.key === "Escape") {
+        closeActiveModal();
+      }
+    };
+
+    document.addEventListener("mousedown", handleOverlay);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOverlay);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [activeModal, closeActiveModal]);
+
   const deleteConfirmation = () => {
-
-
     setActiveModal("delete-confirmation");
-
-  }
+  };
 
   const handleDeleteClickApi = () => {
-
     deleteItem(selectedCard._id)
-    .then(() => {
-      setClothingItems((prevItems) =>
-        prevItems.filter((item) => item._id !== selectedCard._id)
-      );
-      closeActiveModal()
-    })
-    .catch((err) => console.error("Error deleting item:", err));
-  }
+      .then(() => {
+        setClothingItems((prevItems) =>
+          prevItems.filter((item) => item._id !== selectedCard._id),
+        );
+        closeActiveModal();
+      })
+      .catch((err) => console.error("Error deleting item:", err));
+  };
 
   const handleAddItemModalSubmit = ({ name, imageUrl, weather }) => {
+    setIsLoading(true);
     addItem({ name, imageUrl, weather })
       .then((newItem) => {
         setClothingItems((prevItems) => [newItem, ...prevItems]);
         closeActiveModal();
       })
-      .catch((err) => console.error("Error adding item:", err));
+      .catch((err) => console.error("Error adding item:", err))
+      .finally(() => setIsLoading(false));
   };
 
   useEffect(() => {
@@ -93,7 +116,7 @@ function App() {
   }, []);
 
   return (
-    <currentTempUnitContext.Provider
+    <CurrentTempUnitContext.Provider
       value={{ currentTempUnit, handleToggleSwitchChange }}
     >
       <div className="page">
@@ -131,21 +154,23 @@ function App() {
           isOpen={activeModal === "add-garment"}
           onClose={closeActiveModal}
           onAddItemModalSubmit={handleAddItemModalSubmit}
+          isLoading={isLoading}
         />
         <ItemModal
           activeModal={activeModal}
           onClose={closeActiveModal}
           card={selectedCard}
           handleDeleteConfirmation={deleteConfirmation}
-
         />
         {activeModal === "delete-confirmation" && (
-  <DeleteConfirmationModal handleDeleteItem={handleDeleteClickApi}
-  activeModal={activeModal}
-  onClose={closeActiveModal} />
-)}
+          <DeleteConfirmationModal
+            handleDeleteItem={handleDeleteClickApi}
+            activeModal={activeModal}
+            onClose={closeActiveModal}
+          />
+        )}
       </div>
-    </currentTempUnitContext.Provider>
+    </CurrentTempUnitContext.Provider>
   );
 }
 
