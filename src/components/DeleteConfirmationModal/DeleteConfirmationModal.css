@@ -1,0 +1,33 @@
+.modal__content_confirm-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 670px;
+  height: 280px;
+}
+
+.modal__content-confirmation * {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal__confirmation-buttons button {
+  border: none;
+  background-color: transparent;
+}
+
+.modal__caption {
+  margin: 0;
+}
+
+.modal__delete-button {
+  color: red;
+  margin-top: 40px;
+  cursor: pointer;
+}
+
+.modal__cancel-button {
+margin-top: 24px;
+cursor: pointer;
+}

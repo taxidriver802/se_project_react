@@ -4,12 +4,12 @@ import "./ClothesSection.css";
 
 /* import handeCardClick from "../../utils/handleCardClick"; */
 
-function ClothesSection({ onCardClick, clothingItems }) {
+function ClothesSection({ onCardClick, clothingItems, handleAddClick }) {
   return (
     <div className="clothes__section">
       <div className="clothes__section__header">
         <p className="clothes__section__title">Your Items</p>
-        <button type="button" className="clothes__section-button">
+        <button onClick={handleAddClick} type="button" className="clothes__section-button">
           + Add New
         </button>
       </div>

@@ -11,6 +11,7 @@ import ItemModal from "../ItemModal/ItemModal";
 import currentTempUnitContext from "../../contexts/CurrentTempUnitContext.jsx";
 import Profile from "../Profile/Profile.jsx";
 import AddItemModal from "../AddItemModal/AddItemModal.jsx";
+import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal.jsx"
 import { defaultClothingItems } from "../../utils/constants.js";
 import { getItems, addItem, deleteItem } from "../../utils/api.js";
 
@@ -33,8 +34,6 @@ function App() {
   };
 
   const handleCardClick = (card) => {
-
-
     setActiveModal("preview");
     setSelectedCard(card);
   };
@@ -46,6 +45,13 @@ function App() {
   const closeActiveModal = () => {
     setActiveModal("");
   };
+
+  const deleteConfirmation = () => {
+
+
+    setActiveModal("delete-confirmation");
+
+  }
 
   const handleDeleteClickApi = () => {
 
@@ -67,10 +73,6 @@ function App() {
       })
       .catch((err) => console.error("Error adding item:", err));
   };
-
-
-
-  /* debugger; */
 
   useEffect(() => {
     getWeather(coordinates, APIkey)
@@ -116,6 +118,7 @@ function App() {
                 <Profile
                   onCardClick={handleCardClick}
                   clothingItems={clothingItems}
+                  handleAddClick={handleAddClick}
                 />
               }
             />
@@ -133,9 +136,14 @@ function App() {
           activeModal={activeModal}
           onClose={closeActiveModal}
           card={selectedCard}
-          handleDeleteItem={handleDeleteClickApi}
+          handleDeleteConfirmation={deleteConfirmation}
 
         />
+        {activeModal === "delete-confirmation" && (
+  <DeleteConfirmationModal handleDeleteItem={handleDeleteClickApi}
+  activeModal={activeModal}
+  onClose={closeActiveModal} />
+)}
       </div>
     </currentTempUnitContext.Provider>
   );
