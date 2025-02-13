@@ -12,7 +12,7 @@ import currentTempUnitContext from "../../contexts/CurrentTempUnitContext.jsx";
 import Profile from "../Profile/Profile.jsx";
 import AddItemModal from "../AddItemModal/AddItemModal.jsx";
 import { defaultClothingItems } from "../../utils/constants.js";
-import { getItems } from "../../utils/api.js";
+import { getItems, addItem, deleteItem } from "../../utils/api.js";
 
 function App() {
   const [weatherData, setWeatherData] = useState({
@@ -33,6 +33,8 @@ function App() {
   };
 
   const handleCardClick = (card) => {
+
+
     setActiveModal("preview");
     setSelectedCard(card);
   };
@@ -45,13 +47,30 @@ function App() {
     setActiveModal("");
   };
 
+  const handleDeleteClickApi = () => {
+
+    deleteItem(selectedCard._id)
+    .then(() => {
+      setClothingItems((prevItems) =>
+        prevItems.filter((item) => item._id !== selectedCard._id)
+      );
+      closeActiveModal()
+    })
+    .catch((err) => console.error("Error deleting item:", err));
+  }
+
   const handleAddItemModalSubmit = ({ name, imageUrl, weather }) => {
-    setClothingItems((prevItems) => [
-      { name, imageUrl, weather },
-      ...prevItems,
-    ]);
-    closeActiveModal();
+    addItem({ name, imageUrl, weather })
+      .then((newItem) => {
+        setClothingItems((prevItems) => [newItem, ...prevItems]);
+        closeActiveModal();
+      })
+      .catch((err) => console.error("Error adding item:", err));
   };
+
+
+
+  /* debugger; */
 
   useEffect(() => {
     getWeather(coordinates, APIkey)
@@ -114,6 +133,8 @@ function App() {
           activeModal={activeModal}
           onClose={closeActiveModal}
           card={selectedCard}
+          handleDeleteItem={handleDeleteClickApi}
+
         />
       </div>
     </currentTempUnitContext.Provider>
