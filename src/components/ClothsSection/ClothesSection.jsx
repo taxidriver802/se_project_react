@@ -4,12 +4,7 @@ import React from 'react';
 import ItemCard from '../ItemCard/ItemCard.jsx';
 import './ClothesSection.css';
 
-function ClothesSection({
-  onCardClick,
-  clothingItems,
-  handleAddClick,
-  handleCustomizeClick,
-}) {
+function ClothesSection({ onCardClick, clothingItems, handleAddClick }) {
   return (
     <div className="clothes__section">
       <div className="clothes__section__header">
@@ -21,15 +16,6 @@ function ClothesSection({
         >
           + Add New
         </button>
-        <Link to="/customize">
-          <button
-            type="button"
-            className="clothes__section_custom-button"
-            onClick={handleCustomizeClick}
-          >
-            ~W.I.P.~ Customize Your Look! ~W.I.P.~
-          </button>
-        </Link>
       </div>
 
       <ul className="clothes__section__items">

@@ -6,7 +6,7 @@ import Footer from '../Footer/Footer.jsx';
 import ItemModal from '../ItemModal/ItemModal';
 import CurrentTempUnitContext from '../../contexts/CurrentTempUnitContext.jsx';
 import Profile from '../Profile/Profile.jsx';
-import Customize from '../Customize/Customize.jsx';
+
 import AddItemModal from '../AddItemModal/AddItemModal.jsx';
 import DeleteConfirmationModal from '../DeleteConfirmationModal/DeleteConfirmationModal.jsx';
 import {
@@ -48,11 +48,6 @@ function App() {
 
   const handleAddClick = () => {
     setActiveModal('add-garment');
-  };
-
-  const handleCustomizeClick = () => {
-    console.log('Customize button hudhudhclicked');
-    navigate('/customize');
   };
 
   const closeActiveModal = () => {
@@ -119,7 +114,12 @@ function App() {
   useEffect(() => {
     getItems()
       .then((data) => {
-        setClothingItems(data);
+        if (Array.isArray(data)) {
+          const reversedData = data.reverse();
+          setClothingItems(reversedData);
+        } else {
+          console.error('Expected data to be an array:', data);
+        }
       })
       .catch(console.error);
   }, []);
@@ -154,18 +154,7 @@ function App() {
                 />
               }
             />
-            <Route
-              exact
-              path="/customize"
-              element={
-                <Customize
-                  onCardClick={handleCardClick}
-                  clothingItems={clothingItems}
-                  handleAddClick={handleAddClick}
-                  onCustomizeClick={handleCustomizeClick}
-                />
-              }
-            />
+            {/*  */}
             <Route path="*" element={<p>ERROR: 404!1!1!1!</p>} />
           </Routes>
 

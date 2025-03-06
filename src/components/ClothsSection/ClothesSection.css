@@ -1,8 +1,8 @@
 .clothes__section__header {
   display: flex;
   flex-direction: row;
-  align-items: center; /* Ensure items are centered vertically */
-  width: 100%; /* Ensure the header takes the full width */
+  align-items: center;
+  width: 100%;
 }
 
 .clothes__section__items {
@@ -13,7 +13,6 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: 20px;
-  /* margin-left: 300px; */
 }
 
 .clothes__section__title {
@@ -25,11 +24,4 @@
   cursor: pointer;
   color: rgba(0, 0, 0, 0.6);
   background-color: transparent;
-}
-
-.clothes__section_custom-button {
-  background-color: transparent;
-  border: none;
-  margin-left: auto; /* Use margin-left: auto to push the button to the right */
-  cursor: pointer;
 }

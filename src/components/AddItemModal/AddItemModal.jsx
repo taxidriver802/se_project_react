@@ -33,8 +33,6 @@ export default function AddItemModal({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log({ name, imageUrl, weather });
-
     //update clothing items array && close modal
     onAddItemModalSubmit({ name, imageUrl, weather });
   };

@@ -1,10 +1,10 @@
-import { useContext } from "react";
+import { useContext } from 'react';
 
-import "../../vendor/fonts.css";
-import "./Main.css";
-import WeatherCard from "../WeatherCard/WeatherCard";
-import CurrentTempUnitContext from "../../contexts/CurrentTempUnitContext.jsx";
-import ItemCard from "../ItemCard/ItemCard";
+import '../../vendor/fonts.css';
+import './Main.css';
+import WeatherCard from '../WeatherCard/WeatherCard';
+import CurrentTempUnitContext from '../../contexts/CurrentTempUnitContext.jsx';
+import ItemCard from '../ItemCard/ItemCard';
 
 function Main({ weatherData, onCardClick, clothingItems }) {
   const { currentTempUnit } = useContext(CurrentTempUnitContext);
