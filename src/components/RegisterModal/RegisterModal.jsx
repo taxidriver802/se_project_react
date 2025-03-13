@@ -59,7 +59,7 @@ export default function RegisterModal({
           type="email"
           name="email"
           className="modal__input"
-          id="email"
+          id="regsiterEmail"
           placeholder="Email"
           required
           minLength="1"
@@ -75,7 +75,7 @@ export default function RegisterModal({
           type="password"
           name="password"
           className="modal__input"
-          id="password"
+          id="registerPassword"
           placeholder="Password"
           required
           minLength="1"
@@ -91,7 +91,7 @@ export default function RegisterModal({
           type="text"
           name="name"
           className="modal__input"
-          id="name"
+          id="registerName"
           placeholder="Name"
           required
           minLength="1"

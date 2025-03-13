@@ -1,9 +1,15 @@
-import "./ItemModal.css";
+import { useContext } from 'react';
+
+import './ItemModal.css';
+
+import CurrentUserContext from '../../contexts/CurrentUserContext.jsx';
 
 function ItemModal({ activeModal, onClose, card, handleDeleteConfirmation }) {
+  const currentUser = useContext(CurrentUserContext);
+  const isOwn = card.owner === currentUser._id;
 
   return (
-    <div className={`modal  ${activeModal === "preview" && "modal_opened"}`}>
+    <div className={`modal  ${activeModal === 'preview' && 'modal_opened'}`}>
       <div className="modal__item">
         <div className="modal__content_type_image">
           <button
@@ -19,9 +25,15 @@ function ItemModal({ activeModal, onClose, card, handleDeleteConfirmation }) {
             <p className="modal__weather">Weather: {card.weather}</p>
           </div>
           <div className="modal__footer-button-container">
-            <button onClick={handleDeleteConfirmation} className="modal__footer-button" type="button">
-              Delete Item
-            </button>
+            {isOwn && (
+              <button
+                onClick={handleDeleteConfirmation}
+                className="modal__footer-button"
+                type="button"
+              >
+                Delete Item
+              </button>
+            )}
           </div>
         </div>
       </div>

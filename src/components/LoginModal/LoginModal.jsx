@@ -47,7 +47,7 @@ export default function LoginModal({
           type="email"
           name="email"
           className="modal__input"
-          id="email"
+          id="loginEmail"
           placeholder="Email"
           required
           minLength="1"
@@ -63,7 +63,7 @@ export default function LoginModal({
           type="password"
           name="password"
           className="modal__input"
-          id="password"
+          id="loginPassword"
           placeholder="Password"
           required
           minLength="1"
