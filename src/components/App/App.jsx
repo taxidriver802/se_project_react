@@ -5,10 +5,12 @@ import Header from '../Header/Header.jsx';
 import Footer from '../Footer/Footer.jsx';
 import ItemModal from '../ItemModal/ItemModal';
 import CurrentTempUnitContext from '../../contexts/CurrentTempUnitContext.jsx';
+import CurrentUserContext from '../../contexts/CurrentUserContext.jsx';
 import Profile from '../Profile/Profile.jsx';
 
 import AddItemModal from '../AddItemModal/AddItemModal.jsx';
 import DeleteConfirmationModal from '../DeleteConfirmationModal/DeleteConfirmationModal.jsx';
+import auth from '../../utils/auth.js';
 import {
   APIkey,
   coordinates,
@@ -16,7 +18,8 @@ import {
 } from '../../utils/constants.js';
 import { getItems, addItem, deleteItem } from '../../utils/api.js';
 import { getWeather, filterWeatherData } from '../../utils/weatherApi.js';
-/* import ClothesSection from '../ClothsSection/ClothesSection.jsx'; */
+import { signin, signup } from '../../utils/auth.js';
+
 import './App.css';
 
 function App() {
@@ -34,6 +37,8 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({});
   const [currentTempUnit, setCurrentTempUnit] = useState('F');
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
 
   const navigate = useNavigate();
 
@@ -53,6 +58,21 @@ function App() {
   const closeActiveModal = () => {
     setActiveModal('');
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      auth
+        .checkToken(token)
+        .then((res) => {
+          if (res) {
+            setIsLoggedIn(true);
+            setCurrentUser(res.user);
+          }
+        })
+        .catch((err) => console.error('Token check error:', err));
+    }
+  }, []);
 
   useEffect(() => {
     const handleOverlay = (e) => {
@@ -121,66 +141,103 @@ function App() {
           console.error('Expected data to be an array:', data);
         }
       })
-      .catch(console.error);
+      .catch((err) => {
+        console.error('Error fetching items:', err);
+      });
   }, []);
 
+  const handleUserRegister = (email, password, name, avatar) => {
+    setIsLoading(true);
+    signup(email, password, name, avatar)
+      .then((res) => {
+        if (res) {
+          handleUserLogin(email, password);
+        }
+      })
+      .catch((err) => console.error('Registration error:', err));
+  };
+
+  const handleUserLogin = (email, password) => {
+    setIsLoading(true);
+    signin(email, password)
+      .then((res) => {
+        if (res.token) {
+          localStorage.setItem('jwt', res.token);
+          setIsLoggedIn(true);
+          setCurrentUser(res.user);
+          navigate('/');
+        }
+      })
+      .catch((err) => console.error('Login error:', err))
+      .finally(() => setIsLoading(false));
+  };
+
   return (
-    <CurrentTempUnitContext.Provider
-      value={{ currentTempUnit, handleToggleSwitchChange }}
-    >
-      <div className="page">
-        <div className="page__content">
-          <Header handleAddClick={handleAddClick} weatherData={weatherData} />
+    <CurrentUserContext.Provider value={currentUser}>
+      <CurrentTempUnitContext.Provider
+        value={{ currentTempUnit, handleToggleSwitchChange }}
+      >
+        <div className="page">
+          <div className="page__content">
+            <Header handleAddClick={handleAddClick} weatherData={weatherData} />
 
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Main
-                  weatherData={weatherData}
-                  onCardClick={handleCardClick}
-                  clothingItems={clothingItems}
-                />
-              }
-            />
-            <Route
-              exact
-              path="/profile"
-              element={
-                <Profile
-                  onCardClick={handleCardClick}
-                  clothingItems={clothingItems}
-                  handleAddClick={handleAddClick}
-                />
-              }
-            />
-            {/*  */}
-            <Route path="*" element={<p>ERROR: 404!1!1!1!</p>} />
-          </Routes>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Main
+                    weatherData={weatherData}
+                    onCardClick={handleCardClick}
+                    clothingItems={clothingItems}
+                  />
+                }
+              />
+              <Route
+                exact
+                path="/profile"
+                element={
+                  <Profile
+                    onCardClick={handleCardClick}
+                    clothingItems={clothingItems}
+                    handleAddClick={handleAddClick}
+                  />
+                }
+              />
+              <Route
+                path="*"
+                element={
+                  <p>
+                    This page is not currently available, Please check your URL
+                    and try again.
+                  </p>
+                }
+              />
+            </Routes>
 
-          <Footer />
-        </div>
-        <AddItemModal
-          isOpen={activeModal === 'add-garment'}
-          onClose={closeActiveModal}
-          onAddItemModalSubmit={handleAddItemModalSubmit}
-          isLoading={isLoading}
-        />
-        <ItemModal
-          activeModal={activeModal}
-          onClose={closeActiveModal}
-          card={selectedCard}
-          handleDeleteConfirmation={deleteConfirmation}
-        />
-        {activeModal === 'delete-confirmation' && (
-          <DeleteConfirmationModal
-            handleDeleteItem={handleDeleteClickApi}
+            <Footer />
+          </div>
+          <AddItemModal
+            isOpen={activeModal === 'add-garment'}
+            onClose={closeActiveModal}
+            onAddItemModalSubmit={handleAddItemModalSubmit}
+            isLoading={isLoading}
+          />
+          <ItemModal
             activeModal={activeModal}
             onClose={closeActiveModal}
+            card={selectedCard}
+            handleDeleteConfirmation={deleteConfirmation}
           />
-        )}
-      </div>
-    </CurrentTempUnitContext.Provider>
+          {activeModal === 'delete-confirmation' && (
+            <DeleteConfirmationModal
+              handleDeleteItem={handleDeleteClickApi}
+              activeModal={activeModal}
+              onClose={closeActiveModal}
+            />
+          )}
+        </div>
+      </CurrentTempUnitContext.Provider>
+    </CurrentUserContext.Provider>
   );
 }
 
