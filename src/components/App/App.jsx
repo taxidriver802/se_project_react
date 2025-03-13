@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import Main from '../Main/Main.jsx';
 import Header from '../Header/Header.jsx';
 import Footer from '../Footer/Footer.jsx';
@@ -10,7 +10,8 @@ import Profile from '../Profile/Profile.jsx';
 
 import AddItemModal from '../AddItemModal/AddItemModal.jsx';
 import DeleteConfirmationModal from '../DeleteConfirmationModal/DeleteConfirmationModal.jsx';
-import auth from '../../utils/auth.js';
+import LoginModal from '../LoginModal/LoginModal.jsx';
+import RegisterModal from '../RegisterModal/RegisterModal.jsx';
 import {
   APIkey,
   coordinates,
@@ -18,7 +19,7 @@ import {
 } from '../../utils/constants.js';
 import { getItems, addItem, deleteItem } from '../../utils/api.js';
 import { getWeather, filterWeatherData } from '../../utils/weatherApi.js';
-import { signin, signup } from '../../utils/auth.js';
+import { signin, signup, checkToken } from '../../utils/auth.js';
 
 import './App.css';
 
@@ -39,6 +40,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -171,15 +174,29 @@ function App() {
       .catch((err) => console.error('Login error:', err))
       .finally(() => setIsLoading(false));
   };
+  const handleSignUpClick = () => {
+    setIsRegisterModalOpen(true);
+    console.log('Sign Up button clicked');
+  };
+
+  const handleLogInClick = () => {
+    setIsLoginModalOpen(true);
+    console.log('Log In button clicked');
+  };
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
+    <CurrentUserContext.Provider value={(currentUser, isLoggedIn)}>
       <CurrentTempUnitContext.Provider
         value={{ currentTempUnit, handleToggleSwitchChange }}
       >
         <div className="page">
           <div className="page__content">
-            <Header handleAddClick={handleAddClick} weatherData={weatherData} />
+            <Header
+              handleAddClick={handleAddClick}
+              weatherData={weatherData}
+              onSignUpClick={handleSignUpClick}
+              onLogInClick={handleLogInClick}
+            />
 
             <Routes>
               <Route
@@ -235,6 +252,18 @@ function App() {
               onClose={closeActiveModal}
             />
           )}
+          <RegisterModal
+            isOpen={isRegisterModalOpen}
+            onClose={() => setIsRegisterModalOpen(false)}
+            onRegister={handleUserRegister}
+            isLoading={isLoading}
+          />
+          <LoginModal
+            isOpen={isLoginModalOpen}
+            onClose={() => setIsLoginModalOpen(false)}
+            onLogin={handleUserLogin}
+            isLoading={isLoading}
+          />
         </div>
       </CurrentTempUnitContext.Provider>
     </CurrentUserContext.Provider>
