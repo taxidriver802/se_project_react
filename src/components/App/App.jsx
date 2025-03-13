@@ -64,13 +64,13 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem('jwt');
+
     if (token) {
-      auth
-        .checkToken(token)
+      checkToken(token)
         .then((res) => {
           if (res) {
             setIsLoggedIn(true);
-            setCurrentUser(res.user);
+            setCurrentUser(res);
           }
         })
         .catch((err) => console.error('Token check error:', err));
@@ -149,25 +149,27 @@ function App() {
       });
   }, []);
 
-  const handleUserRegister = (email, password, name, avatar) => {
+  const handleUserRegister = ({ email, password, name, avatar }) => {
     setIsLoading(true);
     signup(email, password, name, avatar)
       .then((res) => {
         if (res) {
-          handleUserLogin(email, password);
+          handleUserLogin({ email, password });
         }
       })
-      .catch((err) => console.error('Registration error:', err));
+      .catch((err) => console.error(err))
+      .finally(() => setIsLoading(false));
   };
 
-  const handleUserLogin = (email, password) => {
+  const handleUserLogin = (values) => {
     setIsLoading(true);
-    signin(email, password)
+    signin(values.email, values.password)
       .then((res) => {
         if (res.token) {
           localStorage.setItem('jwt', res.token);
           setIsLoggedIn(true);
-          setCurrentUser(res.user);
+          setCurrentUser(res);
+          setIsLoginModalOpen(false);
           navigate('/');
         }
       })
@@ -176,16 +178,21 @@ function App() {
   };
   const handleSignUpClick = () => {
     setIsRegisterModalOpen(true);
-    console.log('Sign Up button clicked');
   };
 
   const handleLogInClick = () => {
     setIsLoginModalOpen(true);
-    console.log('Log In button clicked');
+  };
+
+  const handleLogOutClick = () => {
+    localStorage.removeItem('jwt');
+    setIsLoggedIn(false);
+    setCurrentUser({});
+    navigate('/');
   };
 
   return (
-    <CurrentUserContext.Provider value={(currentUser, isLoggedIn)}>
+    <CurrentUserContext.Provider value={{ currentUser, isLoggedIn }}>
       <CurrentTempUnitContext.Provider
         value={{ currentTempUnit, handleToggleSwitchChange }}
       >
@@ -217,6 +224,7 @@ function App() {
                     onCardClick={handleCardClick}
                     clothingItems={clothingItems}
                     handleAddClick={handleAddClick}
+                    onLogout={handleLogOutClick}
                   />
                 }
               />

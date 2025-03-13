@@ -10,6 +10,7 @@ import ToggleSwitch from '../toggleSwitch/toggleSwitch';
 
 function Header({ handleAddClick, weatherData, onSignUpClick, onLogInClick }) {
   const { currentUser, isLoggedIn } = useContext(CurrentUserContext);
+
   const currentDate = new Date().toLocaleString('default', {
     month: 'long',
     day: 'numeric',
@@ -24,7 +25,7 @@ function Header({ handleAddClick, weatherData, onSignUpClick, onLogInClick }) {
         {currentDate}, {weatherData.city}
       </p>
       <ToggleSwitch />
-      {currentUser && (
+      {isLoggedIn && (
         <button
           onClick={handleAddClick}
           type="button"
@@ -35,12 +36,12 @@ function Header({ handleAddClick, weatherData, onSignUpClick, onLogInClick }) {
       )}
 
       <div className="header__user-container">
-        {currentUser ? (
+        {isLoggedIn ? (
           <Link to="/profile" className="header__link">
-            <p className="header__username">{currentUser.name}</p>
+            <p className="header__username">{currentUser?.name}</p>
             <img
               src={avatar}
-              alt={currentUser.name}
+              alt={currentUser?.name}
               className="header__avatar"
             />
           </Link>

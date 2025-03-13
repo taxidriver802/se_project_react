@@ -7,7 +7,9 @@ function signup(email, password, name, avatar) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ email, password, name, avatar }),
-  });
+  }).catch((error) =>
+    Promise.reject(`Failed to sign up: ${error.message || error}`)
+  );
 }
 
 function signin(email, password) {
@@ -17,7 +19,9 @@ function signin(email, password) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ email, password }),
-  });
+  }).catch((error) =>
+    Promise.reject(`Failed to sign in: ${error.message || error}`)
+  );
 }
 
 function checkToken(token) {
@@ -30,7 +34,9 @@ function checkToken(token) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-  });
+  }).catch((error) =>
+    Promise.reject(`Failed to check token: ${error.message || error}`)
+  );
 }
 
 export { signup, signin, checkToken };

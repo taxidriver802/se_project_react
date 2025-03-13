@@ -9,11 +9,17 @@ function request(url, options) {
 }
 
 function checkResponse(res) {
-  return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
+  return res.ok
+    ? res.json()
+    : res
+        .json()
+        .then((err) => Promise.reject(`Error: ${res.status} - ${err.message}`));
 }
 
 function getItems() {
-  return request(`${baseUrl}/items`, { method: 'GET' });
+  return request(`${baseUrl}/items`, { method: 'GET' }).catch((error) =>
+    Promise.reject(`Failed to fetch items: ${error}`)
+  );
 }
 
 function addItem({ name, imageUrl, weather }, token) {
@@ -24,7 +30,7 @@ function addItem({ name, imageUrl, weather }, token) {
       authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ name, imageUrl, weather }),
-  });
+  }).catch((error) => Promise.reject(`Failed to add item: ${error}`));
 }
 
 function deleteItem(itemId, token) {
@@ -34,7 +40,7 @@ function deleteItem(itemId, token) {
       'Content-Type': 'application/json',
       authorization: `Bearer ${token}`,
     },
-  });
+  }).catch((error) => Promise.reject(`Failed to delete item: ${error}`));
 }
 
 export { getItems, addItem, deleteItem, checkResponse, request, baseUrl };

@@ -6,19 +6,19 @@ import ModalWithForm from '../ModalWithForm/ModalWithForm';
 export default function RegisterModal({
   onClose,
   isOpen,
-  onRegisterSubmit,
+  onRegister,
   isLoading,
 }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [avatarUrl, setAvatarUrl] = useState('');
+  const [avatar, setAvatar] = useState('');
 
   useEffect(() => {
     setName('');
     setEmail('');
     setPassword('');
-    setAvatarUrl('');
+    setAvatar('');
   }, [isOpen]);
 
   const handleEmailChange = (e) => {
@@ -31,17 +31,17 @@ export default function RegisterModal({
     setName(e.target.value);
   };
   const handleAvatarUrlChange = (e) => {
-    setAvatarUrl(e.target.value);
+    setAvatar(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    onRegisterSubmit({
+    onRegister({
       email,
       password,
       name,
-      avatarUrl,
+      avatar,
     });
   };
   return (
@@ -63,7 +63,7 @@ export default function RegisterModal({
           placeholder="Email"
           required
           minLength="1"
-          maxLength="30"
+          maxLength="50"
           onChange={handleEmailChange}
           value={email}
         />
@@ -113,7 +113,7 @@ export default function RegisterModal({
           minLength="1"
           maxLength="300"
           onChange={handleAvatarUrlChange}
-          value={avatarUrl}
+          value={avatar}
         />
       </label>
     </ModalWithForm>
