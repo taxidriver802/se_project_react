@@ -6,8 +6,14 @@ import CurrentUserContext from '../../contexts/CurrentUserContext.jsx';
 import ItemCard from '../ItemCard/ItemCard.jsx';
 import './ClothesSection.css';
 
-function ClothesSection({ onCardClick, clothingItems, handleAddClick }) {
-  const currentUser = useContext(CurrentUserContext);
+function ClothesSection({
+  onCardClick,
+  clothingItems,
+  handleAddClick,
+  onCardLike,
+}) {
+  const { currentUser } = useContext(CurrentUserContext);
+
   return (
     <div className="clothes__section">
       <div className="clothes__section__header">
@@ -22,16 +28,18 @@ function ClothesSection({ onCardClick, clothingItems, handleAddClick }) {
       </div>
 
       <ul className="clothes__section__items">
-        {clothingItems.map(
-          (filteredCard) =>
+        {clothingItems.map((filteredCard) => {
+          return (
             filteredCard.owner === currentUser._id && (
               <ItemCard
                 key={filteredCard._id}
                 item={filteredCard}
                 onCardClick={onCardClick}
+                onCardLike={onCardLike}
               />
             )
-        )}
+          );
+        })}
       </ul>
     </div>
   );

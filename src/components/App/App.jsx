@@ -17,11 +17,23 @@ import {
   coordinates,
   defaultClothingItems,
 } from '../../utils/constants.js';
-import { getItems, addItem, deleteItem } from '../../utils/api.js';
+import {
+  getItems,
+  addItem,
+  deleteItem,
+  addCardLike,
+  removeCardLike,
+} from '../../utils/api.js';
 import { getWeather, filterWeatherData } from '../../utils/weatherApi.js';
-import { signin, signup, checkToken } from '../../utils/auth.js';
+import {
+  signin,
+  signup,
+  checkToken,
+  updateCurrentUser,
+} from '../../utils/auth.js';
 
 import './App.css';
+import EditProfileModal from '../EditProfileModal/EditProfileModal.jsx';
 
 function App() {
   const [weatherData, setWeatherData] = useState({
@@ -42,6 +54,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -115,10 +128,17 @@ function App() {
   };
 
   const handleAddItemModalSubmit = ({ name, imageUrl, weather }) => {
+    const token = localStorage.getItem('jwt');
+    if (!token) {
+      console.error('No token found for item addition');
+      return;
+    }
     setIsLoading(true);
-    addItem({ name, imageUrl, weather })
+    addItem({ name, imageUrl, weather }, token)
       .then((newItem) => {
+        console.log('New item added:', newItem);
         setClothingItems((prevItems) => [newItem, ...prevItems]);
+        console.log(clothingItems);
         closeActiveModal();
       })
       .catch((err) => console.error('Error adding item:', err))
@@ -176,6 +196,11 @@ function App() {
       .catch((err) => console.error('Login error:', err))
       .finally(() => setIsLoading(false));
   };
+
+  const handleEditProfileClick = () => {
+    setIsEditProfileModalOpen(true);
+  };
+
   const handleSignUpClick = () => {
     setIsRegisterModalOpen(true);
   };
@@ -189,6 +214,49 @@ function App() {
     setIsLoggedIn(false);
     setCurrentUser({});
     navigate('/');
+  };
+
+  const handleEditProfileSubmit = ({ name, avatar }) => {
+    const token = localStorage.getItem('jwt');
+    if (!token) {
+      console.error('No token found for user update');
+      return;
+    }
+    setIsLoading(true);
+    updateCurrentUser({ name, avatar }, token)
+      .then((updatedUser) => {
+        setCurrentUser(updatedUser);
+      })
+      .catch((err) => {
+        console.error('Error updating profile:', err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setIsEditProfileModalOpen(false);
+      });
+  };
+
+  const handleCardLike = ({ _id, isLiked }) => {
+    const token = localStorage.getItem('jwt');
+    if (!token) {
+      console.error('No token found for like action');
+      return;
+    }
+    !isLiked
+      ? addCardLike(_id, token)
+          .then((updatedCard) => {
+            setClothingItems((prevItems) =>
+              prevItems.map((item) => (item._id === _id ? updatedCard : item))
+            );
+          })
+          .catch((err) => console.error('Error liking item:', err))
+      : removeCardLike(_id, token)
+          .then((updatedCard) => {
+            setClothingItems((prevItems) =>
+              prevItems.map((item) => (item._id === _id ? updatedCard : item))
+            );
+          })
+          .catch((err) => console.error('Error unliking item:', err));
   };
 
   return (
@@ -213,6 +281,7 @@ function App() {
                     weatherData={weatherData}
                     onCardClick={handleCardClick}
                     clothingItems={clothingItems}
+                    onCardLike={handleCardLike}
                   />
                 }
               />
@@ -225,6 +294,8 @@ function App() {
                     clothingItems={clothingItems}
                     handleAddClick={handleAddClick}
                     onLogout={handleLogOutClick}
+                    onProfileEdit={handleEditProfileClick}
+                    onCardLike={handleCardLike}
                   />
                 }
               />
@@ -262,15 +333,22 @@ function App() {
           )}
           <RegisterModal
             isOpen={isRegisterModalOpen}
-            onClose={() => setIsRegisterModalOpen(false)}
+            onClose={closeActiveModal}
             onRegister={handleUserRegister}
             isLoading={isLoading}
           />
           <LoginModal
             isOpen={isLoginModalOpen}
-            onClose={() => setIsLoginModalOpen(false)}
+            onClose={closeActiveModal}
             onLogin={handleUserLogin}
             isLoading={isLoading}
+          />
+          <EditProfileModal
+            onClose={closeActiveModal}
+            isOpen={isEditProfileModalOpen}
+            onProfileChange={handleEditProfileSubmit}
+            isLoading={isLoading}
+            currentUser={currentUser}
           />
         </div>
       </CurrentTempUnitContext.Provider>

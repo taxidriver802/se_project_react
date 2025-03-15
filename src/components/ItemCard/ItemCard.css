@@ -29,3 +29,22 @@
   border-radius: 20px;
   border: rgba(0, 0, 0, 0.3) 1px solid;
 }
+
+/* .card__like-button {
+  background: transparent url('../../images/like-inactive.svg') center no-repeat;
+  width: 21px;
+  height: 18px;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card__like-button:hover {
+  opacity: 0.5;
+}
+
+.card__like-button_active {
+  background-image: url('../../images/like-active.svg');
+} */

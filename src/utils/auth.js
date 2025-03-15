@@ -24,6 +24,19 @@ function signin(email, password) {
   );
 }
 
+function updateCurrentUser({ name, avatar }, token) {
+  return request(`${baseUrl}/users/me`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ name, avatar }),
+  }).catch((error) =>
+    Promise.reject(`Failed to update user: ${error.message || error}`)
+  );
+}
+
 function checkToken(token) {
   if (!token) {
     return Promise.reject('No token provided');
@@ -32,11 +45,11 @@ function checkToken(token) {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      authorization: `Bearer ${token}`,
     },
   }).catch((error) =>
     Promise.reject(`Failed to check token: ${error.message || error}`)
   );
 }
 
-export { signup, signin, checkToken };
+export { signup, signin, checkToken, updateCurrentUser };

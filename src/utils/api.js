@@ -43,4 +43,33 @@ function deleteItem(itemId, token) {
   }).catch((error) => Promise.reject(`Failed to delete item: ${error}`));
 }
 
-export { getItems, addItem, deleteItem, checkResponse, request, baseUrl };
+function addCardLike(itemId, token) {
+  return request(`${baseUrl}/items/${itemId}/likes`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+  }).catch((error) => Promise.reject(`Failed to like item: ${error}`));
+}
+
+function removeCardLike(itemId, token) {
+  return request(`${baseUrl}/items/${itemId}/likes`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+  }).catch((error) => Promise.reject(`Failed to unlike item: ${error}`));
+}
+
+export {
+  getItems,
+  addItem,
+  deleteItem,
+  addCardLike,
+  removeCardLike,
+  checkResponse,
+  request,
+  baseUrl,
+};
