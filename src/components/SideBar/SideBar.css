@@ -1,18 +1,47 @@
 .sidebar {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 345px;
   font-weight: 700;
   font-size: 20px;
   line-height: 24px;
 }
 
+.sidebar__user_info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .sidebar__avatar {
   height: 56px;
   width: 56px;
+  border-radius: 100px;
+  margin: 10px 0 10px 16px;
 }
 
 .sidebar__username {
   margin-left: 16px;
-  margin-right: 116px;
+  margin-right: auto;
+}
+
+.sidebar__buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 16px;
+  margin-top: 14px;
+  gap: 8px;
+}
+
+.sidebar__change_data-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.sidebar__logout-button {
+  border: none;
+  background: none;
+  cursor: pointer;
 }

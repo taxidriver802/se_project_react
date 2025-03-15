@@ -2,7 +2,6 @@
   display: flex;
   align-items: center;
   padding: 32px 0 28px;
-  /* font-family: "Cabinet Grotesk"; */
   font-weight: 700;
   font-size: 20px;
   line-height: 24px;
@@ -14,6 +13,9 @@
 
 .header__avatar {
   margin-left: 20px;
+  height: 40px;
+  width: 40px;
+  border-radius: 100px;
 }
 
 .header__link {
@@ -43,4 +45,9 @@
 
 .header__username {
   margin: 0;
+}
+
+.header__date-location sup {
+  font-size: 60%;
+  vertical-align: super;
 }

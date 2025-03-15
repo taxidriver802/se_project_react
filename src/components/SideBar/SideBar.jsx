@@ -9,14 +9,30 @@ function SideBar({ onLogoutClick, onEditProfileClick }) {
 
   return (
     <div className="sidebar">
-      <img src={avatar} alt="Default avatar" className="sidebar__avatar" />
-      <p className="sidebar__username">{currentUser?.name}</p>
-      <button onClick={onEditProfileClick} className="change__data-button">
-        Change profile data
-      </button>
-      <button onClick={onLogoutClick} className="logout-button">
-        Log out
-      </button>
+      <div className="sidebar__user_info">
+        <img
+          src={currentUser?.avatar}
+          alt="Default avatar"
+          className="sidebar__avatar"
+        />
+        <p className="sidebar__username">{currentUser?.name}</p>
+      </div>
+      <div className="sidebar__buttons">
+        <button
+          type="button"
+          onClick={onEditProfileClick}
+          className="sidebar__change_data-button"
+        >
+          Change profile data
+        </button>
+        <button
+          type="button"
+          onClick={onLogoutClick}
+          className="sidebar__logout-button"
+        >
+          Log out
+        </button>
+      </div>
     </div>
   );
 }

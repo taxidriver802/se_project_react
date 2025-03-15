@@ -5,7 +5,7 @@ import './ItemModal.css';
 import CurrentUserContext from '../../contexts/CurrentUserContext.jsx';
 
 function ItemModal({ activeModal, onClose, card, handleDeleteConfirmation }) {
-  const currentUser = useContext(CurrentUserContext);
+  const { currentUser } = useContext(CurrentUserContext);
   const isOwn = card.owner === currentUser._id;
 
   return (

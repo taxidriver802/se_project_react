@@ -117,14 +117,17 @@ function App() {
   };
 
   const handleDeleteClickApi = () => {
-    deleteItem(selectedCard._id)
-      .then(() => {
-        setClothingItems((prevItems) =>
-          prevItems.filter((item) => item._id !== selectedCard._id)
-        );
-        closeActiveModal();
-      })
-      .catch((err) => console.error('Error deleting item:', err));
+    const token = localStorage.getItem('jwt');
+    if (currentUser._id === selectedCard.owner) {
+      deleteItem(selectedCard._id, token)
+        .then(() => {
+          setClothingItems((prevItems) =>
+            prevItems.filter((item) => item._id !== selectedCard._id)
+          );
+          closeActiveModal();
+        })
+        .catch((err) => console.error('Error deleting item:', err));
+    }
   };
 
   const handleAddItemModalSubmit = ({ name, imageUrl, weather }) => {

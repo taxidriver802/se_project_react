@@ -11,10 +11,29 @@ import ToggleSwitch from '../toggleSwitch/toggleSwitch';
 function Header({ handleAddClick, weatherData, onSignUpClick, onLogInClick }) {
   const { currentUser, isLoggedIn } = useContext(CurrentUserContext);
 
-  const currentDate = new Date().toLocaleString('default', {
-    month: 'long',
-    day: 'numeric',
-  });
+  // Helper function to get ordinal suffix
+  const getOrdinalSuffix = (day) => {
+    if (day > 3 && day < 21) return 'th';
+    switch (day % 10) {
+      case 1:
+        return 'st';
+      case 2:
+        return 'nd';
+      case 3:
+        return 'rd';
+      default:
+        return 'th';
+    }
+  };
+
+  // Get the current date components
+  const today = new Date();
+  const month = today.toLocaleString('default', { month: 'long' });
+  const day = today.getDate();
+  const suffix = getOrdinalSuffix(day);
+
+  // Format the date with the ordinal suffix
+  const currentDate = `${month} ${day}<sup>${suffix}</sup>`;
 
   return (
     <header className="header">
@@ -22,7 +41,8 @@ function Header({ handleAddClick, weatherData, onSignUpClick, onLogInClick }) {
         <img className="header__logo" src={logo} alt="WTWR logo" />
       </Link>
       <p className="header__date-location">
-        {currentDate}, {weatherData.city}
+        <span dangerouslySetInnerHTML={{ __html: currentDate }}></span>,{' '}
+        {weatherData.city}
       </p>
       <ToggleSwitch />
       {isLoggedIn && (
@@ -40,7 +60,7 @@ function Header({ handleAddClick, weatherData, onSignUpClick, onLogInClick }) {
           <Link to="/profile" className="header__link">
             <p className="header__username">{currentUser?.name}</p>
             <img
-              src={avatar}
+              src={currentUser?.avatar}
               alt={currentUser?.name}
               className="header__avatar"
             />
