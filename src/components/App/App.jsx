@@ -52,9 +52,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -174,42 +171,53 @@ function App() {
 
   const handleUserRegister = ({ email, password, name, avatar }) => {
     setIsLoading(true);
-    signup(email, password, name, avatar)
+    return signup(email, password, name, avatar)
       .then((res) => {
         if (res) {
-          handleUserLogin({ email, password });
+          return handleUserLogin({ email, password });
         }
       })
-      .catch((err) => console.error(err))
+      .catch((err) => {
+        console.error(err);
+        throw err;
+      })
       .finally(() => setIsLoading(false));
   };
 
   const handleUserLogin = (values) => {
     setIsLoading(true);
-    signin(values.email, values.password)
+    return signin(values.email, values.password)
       .then((res) => {
         if (res.token) {
           localStorage.setItem('jwt', res.token);
+          return checkToken(res.token);
+        }
+      })
+      .then((userData) => {
+        if (userData) {
           setIsLoggedIn(true);
-          setCurrentUser(res);
-          setIsLoginModalOpen(false);
+          setCurrentUser(userData);
+          setActiveModal('');
           navigate('/');
         }
       })
-      .catch((err) => console.error('Login error:', err))
+      .catch((err) => {
+        console.error('Login error:', err);
+        throw err;
+      })
       .finally(() => setIsLoading(false));
   };
 
   const handleEditProfileClick = () => {
-    setIsEditProfileModalOpen(true);
+    setActiveModal('edit-profile');
   };
 
   const handleSignUpClick = () => {
-    setIsRegisterModalOpen(true);
+    setActiveModal('register');
   };
 
   const handleLogInClick = () => {
-    setIsLoginModalOpen(true);
+    setActiveModal('login');
   };
 
   const handleLogOutClick = () => {
@@ -235,7 +243,7 @@ function App() {
       })
       .finally(() => {
         setIsLoading(false);
-        setIsEditProfileModalOpen(false);
+        setActiveModal('');
       });
   };
 
@@ -335,20 +343,22 @@ function App() {
             />
           )}
           <RegisterModal
-            isOpen={isRegisterModalOpen}
+            isOpen={activeModal === 'register'}
+            setActiveModal={setActiveModal}
             onClose={closeActiveModal}
             onRegister={handleUserRegister}
             isLoading={isLoading}
           />
           <LoginModal
-            isOpen={isLoginModalOpen}
+            isOpen={activeModal === 'login'}
             onClose={closeActiveModal}
             onLogin={handleUserLogin}
             isLoading={isLoading}
+            setActiveModal={setActiveModal}
           />
           <EditProfileModal
             onClose={closeActiveModal}
-            isOpen={isEditProfileModalOpen}
+            isOpen={activeModal === 'edit-profile'}
             onProfileChange={handleEditProfileSubmit}
             isLoading={isLoading}
             currentUser={currentUser}

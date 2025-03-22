@@ -1,14 +1,27 @@
+import { useState, useEffect } from 'react';
+
 import './ModalWithForm.css';
 
 function ModalWithForm({
   children,
   buttonText,
+  buttonText2,
   title,
   isOpen,
   onClose,
   onSubmit,
   isLoading,
+  activeModal,
+  setActiveModal,
 }) {
+  function switchModal() {
+    if (activeModal === 'login') {
+      setActiveModal('register');
+    } else {
+      setActiveModal('login');
+    }
+  }
+
   return (
     <div className={`modal ${isOpen && 'modal_opened'}`}>
       <div className="modal__content">
@@ -16,9 +29,23 @@ function ModalWithForm({
         <button onClick={onClose} type="button" className="modal__close" />
         <form onSubmit={onSubmit} className="modal__form">
           {children}
-          <button type="submit" disabled={isLoading} className="modal__submit">
-            {buttonText}
-          </button>
+          <div className="modal__submit-buttons">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="modal__submit"
+            >
+              {buttonText}
+            </button>
+            <button
+              type="button"
+              disabled={isLoading}
+              className="modal__submit modal__submit-alt"
+              onClick={switchModal}
+            >
+              {buttonText2}
+            </button>
+          </div>
         </form>
       </div>
     </div>

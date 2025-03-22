@@ -8,11 +8,43 @@ export default function RegisterModal({
   isOpen,
   onRegister,
   isLoading,
+  setActiveModal,
 }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [avatar, setAvatar] = useState('');
+
+  const [errors, setErrors] = useState({
+    email: '',
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setErrors({ email: '' }); // Clear previous errors
+
+    onRegister({
+      email,
+      password,
+      name,
+      avatar,
+    }).catch((err) => {
+      if (
+        err ===
+        'Failed to sign up: Network error: Error: 409 - Email already exists'
+      ) {
+        setErrors((prev) => ({
+          ...prev,
+          email: 'Email already exists. Please try another.',
+        }));
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          email: err.message || 'Registration failed. Please try again.',
+        }));
+      }
+    });
+  };
 
   useEffect(() => {
     setName('');
@@ -34,31 +66,24 @@ export default function RegisterModal({
     setAvatar(e.target.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    onRegister({
-      email,
-      password,
-      name,
-      avatar,
-    });
-  };
   return (
     <ModalWithForm
-      title="Register"
+      title="Sign Up"
       buttonText={isLoading ? 'Signing up...' : 'Sign up'}
+      buttonText2={'or Log In'}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
       isLoading={isLoading}
+      activeModal="register"
+      setActiveModal={setActiveModal}
     >
       <label htmlFor="email" className="modal__label">
         Email
         <input
           type="email"
           name="email"
-          className="modal__input"
+          className={`modal__input ${errors.email ? 'modal__input_error' : ''}`}
           id="regsiterEmail"
           placeholder="Email"
           required
@@ -67,6 +92,9 @@ export default function RegisterModal({
           onChange={handleEmailChange}
           value={email}
         />
+        {errors.email && (
+          <span className="modal__error-message">{errors.email}</span>
+        )}
       </label>
 
       <label htmlFor="password" className="modal__label">
