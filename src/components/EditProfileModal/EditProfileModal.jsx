@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 
+import { useForm } from '../../hooks/useForm';
+
 import './EditProfileModal.css';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 
@@ -14,29 +16,25 @@ export default function EditProfileModal({
     return null;
   }
 
-  const [name, setName] = useState('');
-  const [avatar, setAvatar] = useState('');
+  const { values, handleChange, setValues } = useForm({
+    name: '',
+    avatar: '',
+  });
 
   useEffect(() => {
     if (currentUser) {
-      setName(currentUser.name || '');
-      setAvatar(currentUser.avatar || '');
+      setValues({
+        name: currentUser.name || '',
+        avatar: currentUser.avatar || '',
+      });
     }
   }, [isOpen, currentUser]);
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
-  const handleAvatarChange = (e) => {
-    setAvatar(e.target.value);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-
     onProfileChange({
-      name: name,
-      avatar: avatar,
+      name: values.name,
+      avatar: values.avatar,
     });
   };
 
@@ -59,8 +57,8 @@ export default function EditProfileModal({
           required
           minLength="1"
           maxLength="30"
-          onChange={handleNameChange}
-          value={name}
+          onChange={handleChange}
+          value={values.name}
         />
       </label>
 
@@ -68,14 +66,14 @@ export default function EditProfileModal({
         Avatar
         <input
           type="url"
-          name="url"
+          name="avatar"
           className="modal__input"
           id="edit__profile-avatar"
           required
           minLength="1"
           maxLength="300"
-          onChange={handleAvatarChange}
-          value={avatar}
+          onChange={handleChange}
+          value={values.avatar}
         />
       </label>
     </ModalWithForm>
