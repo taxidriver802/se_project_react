@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 
-import { useForm } from '../../hooks/useForm';
+import useForm from '../../hooks/useForm';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
 
 import './EditProfileModal.css';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
@@ -10,8 +11,8 @@ export default function EditProfileModal({
   isOpen,
   onProfileChange,
   isLoading,
-  currentUser,
 }) {
+  const { currentUser } = useContext(CurrentUserContext);
   if (!currentUser) {
     return null;
   }

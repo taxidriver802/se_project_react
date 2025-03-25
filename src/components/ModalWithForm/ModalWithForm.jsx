@@ -11,17 +11,8 @@ function ModalWithForm({
   onClose,
   onSubmit,
   isLoading,
-  activeModal,
-  setActiveModal,
+  switchModal,
 }) {
-  function switchModal() {
-    if (activeModal === 'login') {
-      setActiveModal('register');
-    } else {
-      setActiveModal('login');
-    }
-  }
-
   return (
     <div className={`modal ${isOpen && 'modal_opened'}`}>
       <div className="modal__content">

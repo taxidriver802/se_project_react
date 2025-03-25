@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { useForm } from '../../hooks/useForm';
+import useForm from '../../hooks/useForm';
 
 import './RegisterModal.css';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
@@ -10,7 +10,7 @@ export default function RegisterModal({
   isOpen,
   onRegister,
   isLoading,
-  setActiveModal,
+  switchModal,
 }) {
   const { values, handleChange, setValues } = useForm({
     email: '',
@@ -68,10 +68,9 @@ export default function RegisterModal({
       onClose={onClose}
       onSubmit={handleSubmit}
       isLoading={isLoading}
-      activeModal="register"
-      setActiveModal={setActiveModal}
+      switchModal={switchModal}
     >
-      <label htmlFor="email" className="modal__label">
+      <label htmlFor="regsiterEmail" className="modal__label">
         Email
         <input
           type="email"
@@ -90,7 +89,7 @@ export default function RegisterModal({
         )}
       </label>
 
-      <label htmlFor="password" className="modal__label">
+      <label htmlFor="registerPassword" className="modal__label">
         Password
         <input
           type="password"
@@ -106,7 +105,7 @@ export default function RegisterModal({
         />
       </label>
 
-      <label htmlFor="name" className="modal__label">
+      <label htmlFor="registerName" className="modal__label">
         Name
         <input
           type="text"
@@ -122,7 +121,7 @@ export default function RegisterModal({
         />
       </label>
 
-      <label htmlFor="imageUrl" className="modal__label">
+      <label htmlFor="avatarUrl" className="modal__label">
         Avatar URL
         <input
           type="url"

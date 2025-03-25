@@ -88,6 +88,8 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (!activeModal) return;
+
     const handleOverlay = (e) => {
       if (e.target.classList.contains('modal')) {
         closeActiveModal();
@@ -197,13 +199,12 @@ function App() {
         if (userData) {
           setIsLoggedIn(true);
           setCurrentUser(userData);
-          setActiveModal('');
+          closeActiveModal();
           navigate('/');
         }
       })
       .catch((err) => {
         console.error('Login error:', err);
-        throw err;
       })
       .finally(() => setIsLoading(false));
   };
@@ -237,13 +238,13 @@ function App() {
     updateCurrentUser({ name, avatar }, token)
       .then((updatedUser) => {
         setCurrentUser(updatedUser);
+        closeActiveModal();
       })
       .catch((err) => {
         console.error('Error updating profile:', err);
       })
       .finally(() => {
         setIsLoading(false);
-        setActiveModal('');
       });
   };
 
@@ -268,6 +269,14 @@ function App() {
             );
           })
           .catch((err) => console.error('Error unliking item:', err));
+  };
+
+  const switchModal = () => {
+    if (activeModal === 'login') {
+      setActiveModal('register');
+    } else {
+      setActiveModal('login');
+    }
   };
 
   return (
@@ -344,24 +353,24 @@ function App() {
           )}
           <RegisterModal
             isOpen={activeModal === 'register'}
-            setActiveModal={setActiveModal}
             onClose={closeActiveModal}
             onRegister={handleUserRegister}
             isLoading={isLoading}
+            switchModal={switchModal}
           />
           <LoginModal
             isOpen={activeModal === 'login'}
             onClose={closeActiveModal}
             onLogin={handleUserLogin}
             isLoading={isLoading}
-            setActiveModal={setActiveModal}
+            switchModal={switchModal}
           />
           <EditProfileModal
             onClose={closeActiveModal}
             isOpen={activeModal === 'edit-profile'}
             onProfileChange={handleEditProfileSubmit}
             isLoading={isLoading}
-            currentUser={currentUser}
+            
           />
         </div>
       </CurrentTempUnitContext.Provider>

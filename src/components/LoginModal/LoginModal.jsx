@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { useForm } from '../../hooks/useForm';
+import useForm from '../../hooks/useForm';
 
 import './LoginModal.css';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
@@ -10,7 +10,7 @@ export default function LoginModal({
   isOpen,
   onLogin,
   isLoading,
-  setActiveModal,
+  switchModal,
 }) {
   const { values, handleChange, setValues } = useForm({
     email: '',
@@ -42,10 +42,10 @@ export default function LoginModal({
       onClose={onClose}
       onSubmit={handleSubmit}
       isLoading={isLoading}
-      activeModal="login"
-      setActiveModal={setActiveModal}
+      switchModal={switchModal}
+
     >
-      <label htmlFor="email" className="modal__label">
+      <label htmlFor="loginEmail" className="modal__label">
         Email
         <input
           type="email"
@@ -61,7 +61,7 @@ export default function LoginModal({
         />
       </label>
 
-      <label htmlFor="password" className="modal__label">
+      <label htmlFor="loginPassword" className="modal__label">
         Password
         <input
           type="password"
