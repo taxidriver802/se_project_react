@@ -11,29 +11,18 @@ import ToggleSwitch from '../toggleSwitch/toggleSwitch';
 function Header({ handleAddClick, weatherData, onSignUpClick, onLogInClick }) {
   const { currentUser, isLoggedIn } = useContext(CurrentUserContext);
 
-  // Helper function to get ordinal suffix
-  const getOrdinalSuffix = (day) => {
-    if (day > 3 && day < 21) return 'th';
-    switch (day % 10) {
-      case 1:
-        return 'st';
-      case 2:
-        return 'nd';
-      case 3:
-        return 'rd';
-      default:
-        return 'th';
-    }
+  // Helper function to format the date with an ordinal suffix
+  const formatDateWithOrdinal = (date) => {
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'long' });
+    const suffix = ['th', 'st', 'nd', 'rd'][
+      day % 10 > 3 || Math.floor(day / 10) === 1 ? 0 : day % 10
+    ];
+    return `${month} ${day}${suffix}`;
   };
 
-  // Get the current date components
-  const today = new Date();
-  const month = today.toLocaleString('default', { month: 'long' });
-  const day = today.getDate();
-  const suffix = getOrdinalSuffix(day);
-
-  // Format the date with the ordinal suffix
-  const currentDate = `${month} ${day}<sup>${suffix}</sup>`;
+  // Get the current date
+  const currentDate = formatDateWithOrdinal(new Date());
 
   return (
     <header className="header">
@@ -41,8 +30,7 @@ function Header({ handleAddClick, weatherData, onSignUpClick, onLogInClick }) {
         <img className="header__logo" src={logo} alt="WTWR logo" />
       </Link>
       <p className="header__date-location">
-        <span dangerouslySetInnerHTML={{ __html: currentDate }}></span>,{' '}
-        {weatherData.city}
+        {currentDate}, {weatherData.city}
       </p>
       <ToggleSwitch />
       {isLoggedIn && (
