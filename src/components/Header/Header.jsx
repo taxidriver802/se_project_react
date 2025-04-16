@@ -5,7 +5,6 @@ import CurrentUserContext from '../../contexts/CurrentUserContext.jsx';
 
 import './Header.css';
 import logo from '../../assets/logo.svg';
-import avatar from '../../assets/avatar.png';
 import ToggleSwitch from '../toggleSwitch/toggleSwitch';
 
 function Header({ handleAddClick, weatherData, onSignUpClick, onLogInClick }) {

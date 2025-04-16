@@ -138,9 +138,7 @@ function App() {
     setIsLoading(true);
     addItem({ name, imageUrl, weather }, token)
       .then((newItem) => {
-        console.log('New item added:', newItem);
         setClothingItems((prevItems) => [newItem, ...prevItems]);
-        console.log(clothingItems);
         closeActiveModal();
       })
       .catch((err) => console.error('Error adding item:', err))
@@ -180,8 +178,12 @@ function App() {
         }
       })
       .catch((err) => {
-        console.error(err);
-        throw err;
+        console.error('Failed to sign up:', err);
+        const errorMessage =
+          err.response?.data?.error ||
+          err.message ||
+          'An error occurred during registration';
+        throw new Error(`Failed to sign up: ${errorMessage}`);
       })
       .finally(() => setIsLoading(false));
   };
@@ -370,7 +372,6 @@ function App() {
             isOpen={activeModal === 'edit-profile'}
             onProfileChange={handleEditProfileSubmit}
             isLoading={isLoading}
-            
           />
         </div>
       </CurrentTempUnitContext.Provider>
