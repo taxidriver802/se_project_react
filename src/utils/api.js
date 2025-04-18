@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:3001';
+import { BASE_URL } from './constants.js';
 
 function request(url, options) {
   return fetch(url, options)
@@ -17,13 +17,13 @@ function checkResponse(res) {
 }
 
 function getItems() {
-  return request(`${baseUrl}/items`, { method: 'GET' }).catch((error) =>
+  return request(`${BASE_URL}/items`, { method: 'GET' }).catch((error) =>
     Promise.reject(`Failed to fetch items: ${error}`)
   );
 }
 
 function addItem({ name, imageUrl, weather }, token) {
-  return request(`${baseUrl}/items`, {
+  return request(`${BASE_URL}/items`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ function addItem({ name, imageUrl, weather }, token) {
 }
 
 function deleteItem(itemId, token) {
-  return request(`${baseUrl}/items/${itemId}`, {
+  return request(`${BASE_URL}/items/${itemId}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ function deleteItem(itemId, token) {
 }
 
 function addCardLike(itemId, token) {
-  return request(`${baseUrl}/items/${itemId}/likes`, {
+  return request(`${BASE_URL}/items/${itemId}/likes`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ function addCardLike(itemId, token) {
 }
 
 function removeCardLike(itemId, token) {
-  return request(`${baseUrl}/items/${itemId}/likes`, {
+  return request(`${BASE_URL}/items/${itemId}/likes`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -71,5 +71,4 @@ export {
   removeCardLike,
   checkResponse,
   request,
-  baseUrl,
 };

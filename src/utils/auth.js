@@ -1,7 +1,8 @@
-import { baseUrl, request } from './api.js';
+import { request } from './api.js';
+import { BASE_URL } from './constants.js';
 
 function signup(email, password, name, avatar) {
-  return request(`${baseUrl}/signup`, {
+  return request(`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -13,7 +14,7 @@ function signup(email, password, name, avatar) {
 }
 
 function signin(email, password) {
-  return request(`${baseUrl}/signin`, {
+  return request(`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -25,7 +26,7 @@ function signin(email, password) {
 }
 
 function updateCurrentUser({ name, avatar }, token) {
-  return request(`${baseUrl}/users/me`, {
+  return request(`${BASE_URL}/users/me`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -41,7 +42,7 @@ function checkToken(token) {
   if (!token) {
     return Promise.reject('No token provided');
   }
-  return request(`${baseUrl}/users/me`, {
+  return request(`${BASE_URL}/users/me`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
