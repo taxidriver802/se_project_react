@@ -1,10 +1,12 @@
-# React + Vite
-
-The "WTWR" (What to Wear Right) webpage is my fourth project in the software engineering program at TripleTen. It was created using JavaScript, HTML, and CSS, following a Figma design brief. This project aims to provide users with clothing recommendations based on the current weather conditions.
+# [WTWR (What to Wear?) frontend]
 
 ## Link to Backend Repository
 
 https://github.com/taxidriver802/se_project_express
+
+# [Domain (https://www.wearwithweather.jumpingcrab.com/)]
+
+The "WTWR" (What to Wear Right) webpage is my fourth project in the software engineering program at TripleTen. It was created using JavaScript, HTML, and CSS, following a Figma design brief. This project aims to provide users with clothing recommendations based on the current weather conditions.
 
 ## Features
 
